@@ -8,7 +8,7 @@ import argparse
 PROXY_HOST = '127.0.0.1'
 PROXY_PORT = 8080
 SERVER_HOST = '127.0.0.1'
-SERVER_PORT = 65432
+SERVER_PORT = 9090
 
 # Probabilidades de fallo (0.0 a 1.0)
 PROBABILIDAD_PERDIDA = 0.33
@@ -93,6 +93,7 @@ def manejar_cliente(cliente_conn, cliente_addr):
 
 def iniciar_proxy():
     proxy = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    proxy.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     proxy.bind((PROXY_HOST, PROXY_PORT))
     proxy.listen()
     print(f"[*] Proxy MITM (Atacante) escuchando en {PROXY_HOST}:{PROXY_PORT}")
