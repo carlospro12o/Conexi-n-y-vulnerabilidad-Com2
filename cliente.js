@@ -20,11 +20,12 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-// Función para calcular CRC32 en Javascript estándar
+// Función para calcular CRC32 en Javascript estándar (compatible con UTF-8)
 function calcularCrc32(str) {
+    const buf = Buffer.from(str, 'utf8');
     let crc = -1;
-    for (let i = 0; i < str.length; i++) {
-        crc ^= str.charCodeAt(i);
+    for (let i = 0; i < buf.length; i++) {
+        crc ^= buf[i];
         for (let j = 0; j < 8; j++) {
             crc = (crc >>> 1) ^ ((crc & 1) ? 0xEDB88320 : 0);
         }
