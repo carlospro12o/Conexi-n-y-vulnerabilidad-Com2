@@ -26,7 +26,7 @@ const rl = readline.createInterface({
 function conectar(port = PORT) {
     PORT = port;
     console.log(`\n[+] Conectando a ${HOST}:${PORT}...`);
-    
+
     client = new net.Socket();
 
     client.connect(PORT, HOST, () => {
@@ -37,7 +37,7 @@ function conectar(port = PORT) {
     client.on('data', (data) => {
         const rawResponse = data.toString().trim();
         console.log(`\n📥 [RESPUESTA DE SERVIDOR]: ${rawResponse}`);
-        
+
         try {
             const parsed = JSON.parse(rawResponse);
             console.log(`   Estado: ${parsed.HEADER ? parsed.HEADER.ESTADO : 'OK'}`);
@@ -82,9 +82,9 @@ function promptMensaje() {
 
         // Estructura del protocolo acordado en JSON
         const paquete = {
-            HEADER: { 
-                TIPO: "REQ", 
-                SECUENCIA: seqNum++ 
+            HEADER: {
+                TIPO: "REQ",
+                SECUENCIA: seqNum++
             },
             PAYLOAD: input
         };
