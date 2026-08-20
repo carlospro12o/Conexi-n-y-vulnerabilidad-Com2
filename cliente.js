@@ -26,7 +26,7 @@ const rl = readline.createInterface({
 function conectar(port = PORT) {
     PORT = port;
     console.log(`\n[+] Conectando a ${HOST}:${PORT}...`);
-    
+
     client = new net.Socket();
 
     client.connect(PORT, HOST, () => {
@@ -35,15 +35,16 @@ function conectar(port = PORT) {
     });
 
     let buffer = "";
+    client.on('data', (data) => {
         buffer += data.toString();
-        
+
         let index;
         while ((index = buffer.indexOf('\n')) > -1) {
             const rawResponse = buffer.substring(0, index).trim();
             buffer = buffer.substring(index + 1);
-            
+
             if (!rawResponse) continue;
-            
+
             console.log(`\n[RESPUESTA DE SERVIDOR]: ${rawResponse}`);
             try {
                 const parsed = JSON.parse(rawResponse);
@@ -53,7 +54,7 @@ function conectar(port = PORT) {
             } catch (e) {
                 console.log(`   [ADVERTENCIA] Respuesta no es JSON válido (posible alteración/corrupción de trama).`);
             }
-            
+
             promptMensaje();
         }
     });
