@@ -1,44 +1,42 @@
-# Parcial III - Comunicaciones II
+# Parcial III: Comunicaciones II
 
-Proyecto de Diseño, Adversidad y Robustecimiento de Protocolos de Comunicación.
+## 📌 Roles del Equipo
+* **Estudiante A**: Servidor en Python (`servidor.py`)
+* **Estudiante B**: Cliente en Node.js (`cliente.js`)
+* **Estudiante C**: Agente de Adversidad / Proxy Atacante (`proxy_atacante.py`)
 
-## Estructura del Proyecto
+---
 
-- `servidor.py`: Implementación del Servidor (Estudiante A). Escucha en el puerto 65432, procesa peticiones JSON y responde en el mismo formato. Maneja múltiples clientes concurrentemente usando hilos.
-- `proxy_atacante.py`: Agente de Adversidad / Proxy MITM (Estudiante C). Escucha en el puerto 8080 e intercepta el tráfico hacia el servidor. Inyecta fallas (pérdida, corrupción, latencia) según probabilidades configurables.
+## 🚀 Instrucciones de Ejecución (Fase 1)
 
-## Instrucciones de Ejecución
+### 1. Iniciar el Servidor (Estudiante A - Terminal 1)
+```bash
+python3 servidor.py
+```
+*Escucha en el puerto `65432`.*
 
-1. **Iniciar el Servidor**:
-   Abre una terminal y ejecuta:
-   ```bash
-   python servidor.py
-   ```
-   El servidor quedará escuchando en `127.0.0.1:65432`.
+### 2. Iniciar el Cliente (Estudiante B - Terminal 2)
+```bash
+node cliente.js
+```
+*Se conecta directamente al puerto `65432` del servidor.*
 
-2. **Iniciar el Proxy Atacante**:
-   Abre otra terminal y ejecuta:
-   ```bash
-   python proxy_atacante.py
-   ```
-   El proxy quedará escuchando en `127.0.0.1:8080`.
+---
 
-3. **Conectar el Cliente**:
-   El Estudiante B (Cliente) debe conectarse al puerto `8080` (el proxy) en lugar del puerto del servidor, para que el tráfico pase por el atacante y se simulen las fallas.
+## 🛡️ Probar la Fase 2 (Con Proxy Atacante)
 
-## Protocolo Acordado (Fase 1)
-
-Los mensajes se envían en formato JSON y están delimitados por un salto de línea (`\n`).
-
-**Ejemplo de Petición (Cliente -> Servidor):**
-```json
-{"mensaje": "hola servidor"}
+### 1. Iniciar Servidor (Terminal 1)
+```bash
+python3 servidor.py
 ```
 
-**Ejemplo de Respuesta (Servidor -> Cliente):**
-```json
-{
-  "HEADER": {"TIPO": "RES", "ESTADO": 200},
-  "PAYLOAD": "Mensaje procesado con éxito por el Servidor A"
-}
+### 2. Iniciar Proxy Atacante (Terminal 2)
+```bash
+python3 proxy_atacante.py
+```
+*Escucha en el puerto `8080` e intercepta el tráfico hacia el puerto `65432`.*
+
+### 3. Iniciar Cliente apuntando al Proxy (Terminal 3)
+```bash
+node cliente.js 8080
 ```
